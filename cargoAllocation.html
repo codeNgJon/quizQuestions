@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html> 
+
+<head>
+  <style rel="stylesheet" type="text/css">
+    #allocation{
+      width:250px;
+      height:250px;
+    }
+
+  </style>
+  <script type="text/javascript">
+  // Car constructor - superclass
+  var output = "";
+  var Car = function(weight, name, cargo){
+    this.cargo = cargo;
+    this.weight = weight;
+    this.name = name;
+  }
+ 
+  Car.prototype.allocateCargo = function(){
+    if(this.cargo === 0){
+      this.weight = 0;
+    }
+    if(this.weight > this.cargo){
+      this.weight = this.cargo;
+      this.cargo = 0;
+    } else if(this.weight < this.cargo){
+      this.cargo -= this.weight;
+    }
+    output += "a "+ this.name + " with " + this.weight + " lbs \n";
+  }
+
+  // makes instances of car 
+  var instantiateCar = function(weight, name, cargo){
+    var name = new Car(weight,name,cargo);
+    name.allocateCargo();
+    return name;
+  }
+ 
+  // gets the values of the input fields 
+  var getValue = function(value){
+    var elements = document.getElementsByClassName(value);
+    var results = [];
+    for(var i = 0 ; i < elements.length; i++){
+      results.push(elements[i].value);
+    }
+    return results;
+  }
+
+  //calculates the allocation of the cargo 
+  var calculate = function(){
+    var weights = [100,300,1500,200,800];
+    var cargoName = document.getElementById('Cargo').value;
+    var cargoNumber = document.getElementById("Cargo-number").value;
+    var quantityArr = getValue('quantity');
+    var nameArr = getValue('name');
+
+    output += "Allocating " + cargoNumber + " lbs of " + cargoName + "\n";
+
+    for(var i = 0 ; i < quantityArr.length; i++){
+      var currentQuantity = parseInt(quantityArr[i]);
+      var weight = weights.shift();
+      var name = nameArr.shift();
+      while(currentQuantity > 0){
+        var carType = instantiateCar(weight, name, cargoNumber);
+        cargoNumber = carType.cargo;
+        currentQuantity--;
+      }
+    }
+    
+    output += "we have " + cargoNumber + " lbs of " + cargoName + " left over";
+    document.getElementById('allocation').value = output;
+  };
+
+  </script>
+</head>
+
+<body>
+  <table>
+    <tr>
+      <th>Type of car</th>
+      <th>Quantity</th>
+    </tr>
+    <tr>
+      <td><input class="name" id="SportsCar"></input></td>
+      <td><input class="quantity" id="SportsCar-number"></input></td>
+    </tr>
+    <tr>
+      <td><input class="name" id="FamilyCar"></input></td>
+      <td><input class="quantity" id="FamilyCar-number"></input></td>
+    </tr>
+    <tr>
+      <td><input class="name" id="Truck"></input></td>
+      <td><input class="quantity" id="Truck-number"></input></td>
+    </tr>
+    <tr>
+      <td><input class="name" id="MiniVan"></input></td>
+      <td><input class="quantity" id="MiniVan-number"></input></td>
+    </tr>
+    <tr>
+      <td><input class="name" id="CargoVan"></input></td>
+      <td><input class="quantity" id="CargoVan-number"></input></td>
+    </tr>
+    <tr>
+      <td><input id="Cargo"></input></td>
+      <td><input id="Cargo-number"></input></td>
+    </tr>
+    <tr>
+      <td><button onclick="calculate()">Calculate</button></td>
+    </tr>
+  </table>
+  <div>
+    <textarea id="allocation"></textarea>
+  </div>
+  
+</body>
+
+
+
+</html>

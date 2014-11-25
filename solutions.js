@@ -36,6 +36,8 @@ Using the DOM APIs, write a routine to change every paragraph in a content edita
 
 var blockQuote = function(){
    var elements = document.getElementByTagName('p');
+   for(var i = 0; i<elements.length; i++){
+   }
    console.log(elements);
 }
 
@@ -45,27 +47,28 @@ Write a function: findSumPairs(intArr, sumTotal)
 
 var findSumPairs = function(intArr, sumTotal){
   var results = [];
-  var intCheck = {};
+  var combos = [];
   for(var i = 0 ; i < intArr.length ; i++){
     var currentNum = intArr[i];
     var tempArr = intArr.slice(0,i).concat(intArr.slice(i+1));
     for(var j = 0 ; j < tempArr.length; j++){
       if(currentNum + tempArr[j] === sumTotal){
-        for(var k in intCheck){
+       /* for(var k in intCheck){
           if(intCheck[k] !== currentNum && Object.keys(intCheck).indexOf(currentNum.toString()) === -1){
           intCheck[currentNum] = tempArr[j];
           results.push([currentNum, tempArr[j]]);
           }
-        }
+        }*/
+        results.push([currentNum, tempArr[j]].sort())
       }
     }
-  }
-  console.log(intCheck)
+  } 
+  for(var k = 0 ; k < results.length; k++){
+    if(results.indexOf(results[k].toString() !== -1)){
+      results.splice(k,1);
+    }
+  } 
   return results;
 }
 console.log(findSumPairs([-1, 0, 1, 2,], 1))
-
-/*Object Oriented Programming - Cargo Allocation*/
-
-
 
